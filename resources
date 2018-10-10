@@ -1,0 +1,9 @@
+Resources for all RAD code - 
+
+OpenCV Python: 
+- https://github.com/aquibjaved/Multiple-Color-Tracking-using-opencv-and-python-in-Real-Time/blob/master/color.py
+- https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_colorspaces/py_colorspaces.html#converting-colorspaces
+- https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_template_matching/py_template_matching.html
+
+Pyttsx3 (Text to audio): 
+- https://pyttsx3.readthedocs.io/en/latest/engine.html
