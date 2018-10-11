@@ -1,0 +1,19 @@
+body{
+	background-color: #312E2C;
+	font-family: Verdana;
+	text-align: center;
+}
+	
+
+h1{
+	color: White;
+}
+
+p{
+	color: White;
+}
+
+img{
+	display: block;
+	margin: 0 auto;
+}
