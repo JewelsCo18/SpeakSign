@@ -1,7 +1,7 @@
 import time
 import pyttsx3 as tts
 import cv2
-import numpy 
+import numpy as np
 
 video = cv2.VideoCapture(0)
 
@@ -49,27 +49,24 @@ while(1):
 #understand what this is attempting to do 
 
     cv2.imshow('frame',frame)
-    cv2.imshow('mask',mask)
-    cv2.imshow('res',res)
-    k = cv2.waitKey(5) & 0xFF
-    if k == 27:
-        break
+    cv2.imshow('mask',blue)
+    cv2.imshow('mask',orange)
+    cv2.imshow('mask',red)
+    cv2.imshow('mask',purple)
+    cv2.imshow('res',res_blue)
+    cv2.imshow('res',res_orange)
+    cv2.imshow('res',res_red)
+    cv2.imshow('res',res_purple)
 
-#camera capture
-"""
-while(True):
     
-    # Capture frame-by-frame
-    ret, frame = cap.read()
-
-    # Our operations on the frame come here
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    # Display the resulting frame
-    cv2.imshow('frame',gray)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    k = cv2.waitKey(1) & 0xFF
+    if k == 27:
+        print("Quit")
+        video.release()
+        cv2.destroyAllWindows()
         break
-"""
+
+
 
 # When everything done, release the capture
 video.release()
