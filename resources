@@ -5,6 +5,13 @@ OpenCV Python:
 - https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_colorspaces/py_colorspaces.html#converting-colorspaces
 - https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_template_matching/py_template_matching.html
 - https://www.youtube.com/watch?v=Z78zbnLlPUA
+- https://www.youtube.com/watch?v=mT4gmPCnU58
 
 Pyttsx3 (Text to audio): 
 - https://pyttsx3.readthedocs.io/en/latest/engine.html
+
+Pyserial: 
+- https://stackoverflow.com/questions/676172/full-examples-of-using-pyserial-package
+- https://arduino.stackexchange.com/questions/34535/reading-pushbutton-status-with-pyserial
+- https://github.com/pyserial/pyserial/
+- https://pyserial.readthedocs.io/en/latest/pyserial_api.html (API LIBRARY IMPORTANT)
