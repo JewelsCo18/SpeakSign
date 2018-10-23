@@ -1,3 +1,6 @@
 pyttsx3
 opencv-python
 pyobjc
+pyserial
+numpy
+time
