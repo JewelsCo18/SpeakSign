@@ -1,20 +1,36 @@
 
-const int buttonPin = 7;
-int buttonState = 0;
+const int Analyze = 2;
+const int Space = 3;
+const int Finish = 4;
+
+int AnalyzeState = 0;   
+int SpaceState = 0;
+int FinishState = 0;
+
+
 
 void setup() {
-  // put your setup code here, to run once:
-  pinMode(buttonPin,INPUT); 
+  pinMode(Analyze, INPUT);
+  pinMode(Space, INPUT);
+  pinMode(Finish, INPUT);
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-   buttonState = digitalRead(buttonPin);
+  buttonPressAnalyze = digitalRead(Analyze);
+  buttonPressSpace = digitalRead(Space);
+  buttonPressFinish = digitalRead(Finish);
 
-   if (buttonState == HIGH) {
-    Serial.print("boop");
-   }
-   else {
-     Serial.print("noop");
-   }
+//reading the button pushing
+
+  if (buttonPressAnalyze == HIGH) {
+    Serial.println("analyze")
+    
+  } else if (buttonPressSpace==HIGH) {
+    Serial.println("space")
+    
+  } else if(buttonPressFinish==HIGH) {
+    Serial.println("finish")
+    
+  }
 }
