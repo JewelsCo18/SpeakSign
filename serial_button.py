@@ -1,5 +1,4 @@
 import serial
-import time
 
 try:
    arduino = serial.Serial('/dev/ttyACM', 9600)
@@ -8,11 +7,21 @@ except:
 
 
 try:
-   print arduino.readline()
+   commands = print arduino.readline()
 
-   while True:
-      if arduino.readline().strip() == 'E':
-        print("Detected!\n")
+    while True:
+        if commands == 'analyze':
+            #call analyze
+           print("analyzed")
+        elif commands == 'space':
+            #call space
+           print("spaced")
+        elif commands == 'finish':
+            #call finish
+           print("fiished")
+            
+            
+    
 
 except:
    print ("Failed to read!")
