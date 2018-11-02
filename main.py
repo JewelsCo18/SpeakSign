@@ -14,10 +14,10 @@ def find_centers(frame):
     # Convert BGR to HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    minimumVal = {'red':(166, 84, 141), 'light-blue':(97, 100, 117), 'green':(66, 122, 129), 'yellow':(20, 100, 10), 'pink': (125,100,30), 'white': (0,0,0)} 
-    maximumVal = {'red':(186,255,255), 'light-blue':(117,255,255), 'green':(86,255,255), 'yellow':(30,255,255), 'pink':(255,255,255), 'white':(0,0,255)}
+    minimumVal = {'red':(166, 84, 141), 'blue':(97, 100, 117), 'green':(66, 122, 129), 'yellow':(20, 100, 10), 'pink': (125,100,30), 'white': (0,0,100)} 
+    maximumVal = {'red':(186,255,255), 'blue':(117,255,255), 'green':(86,255,255), 'yellow':(30,255,255), 'pink':(255,255,255), 'white':(0,0,255)}
 
-    colors = {'red':(0,0,255), 'light-blue':(255,0,0), 'green':(0,255,0), 'yellow':(0,255,255), 'pink':(255,0,255), 'white':(255,255,255)}
+    colors = {'red':(0,0,255), 'blue':(255,0,0), 'green':(0,255,0), 'yellow':(0,255,255), 'pink':(255,0,255), 'white':(255,255,255)}
 
     colorCoord = {}
     
@@ -37,8 +37,8 @@ def find_centers(frame):
             colorCoord[key] = [x,y]
 
             creating_circles(radius, x, y, colors, key, frame)
-            
-    print(colorCoord)
+
+    print(colorCoord)    
     return colorCoord
 
 def creating_circles(radius, x, y, colors, key, frame):
@@ -48,17 +48,39 @@ def creating_circles(radius, x, y, colors, key, frame):
         cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
         cv2.putText(frame,key + " ball", (int(x-radius),int(y-radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,colors[key],2)
 
+def translate_to_letter(x,y,colors,key,frame):
+    #letters that utilize these colors consistently
+    thumbIndex_x, thumbIndex_y = (colorCoord['blue'][0]-colorCoord['yellow'][0]),(colorCoord['blue'][1]-colorCoord['yellow'][1])
+    indexMiddle_x,indexMiddle_y = (colorCoord['yellow'][0]-colorCoord['white'][0]),(colorCoord['yellow'][1]-colorCoord['white'][1])
+    middleRing_x, middleRing_y = (colorCoord['white'][0]-colorCoord['green'][0]),(colorCoord['white'][1]-colorCoord['green'][1])
+    ringPinky_x, ringPinky_y = (colorCoord['green'][0]-colorCoord['pink'][0]),(colorCoord['green'][1]-colorCoord['pink'][1])
+    pinkyThumb_x, pinkyThumb_y  = (colorCoord['pink'][0]-colorCoord['blue'][0]),(colorCoord['pink'][1]-colorCoord['blue'][1])
+    
+    if colorCoord['blue'] > 0 and colorCoord['green'] > 0 and colorCoord['yellow'] > 0 and colorCoord['pink'] > 0 and colorCoord['white'] > 0:
+        
+        #R
+        
+
+        #D
+        
+
+    #A
+    if colorCoord['green'] > 0 and colorCoord['yellow'] > 0 and colorCoord['pink'] > 0 and colorCoord['white'] > 0:
+        
+    
+
 #Running program until broken by using escape key
 while(1):
 
     # Take each frame
     _, frame = video.read(0)
     frame = resize(frame)
+    frame = cv2.flip(frame, 1)
     colorCoord = find_centers(frame)
-
+    
+    
     cv2.imshow('frame',frame)     
             
-
     #escape
     k = cv2.waitKey(1) & 0xFF
     if k == 27:#escape key
@@ -67,7 +89,7 @@ while(1):
         cv2.destroyAllWindows()
         question = input("Enter")
         if question == "go":
-            check = colorCoord['light-blue'][0] - colorCoord['yellow'][0]
+            check = colorCoord['blue'][0] - colorCoord['yellow'][0]
             if 102 <= check <= 128:
                 print("done")
         break
