@@ -15,10 +15,17 @@ def find_centers(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     #color section where min and max HSV values are set, general BGR values, and empty color coordinate list
-    minimumVal = {'red':(166, 84, 141), 'blue':(97, 100, 117), 'green':(66, 122, 129), 'yellow':(20, 100, 10), 'pink': (125,100,30), 'white': (0,0,100)} 
-    maximumVal = {'red':(186,255,255), 'blue':(117,255,255), 'green':(86,255,255), 'yellow':(30,255,255), 'pink':(255,255,255), 'white':(0,0,255)}
+    minimumVal = {'blue':(97, 100, 117), 'green':(60,50,50), 'yellow':(20, 100, 10), 'pink': (125,100,30), 'white': (0,0,100)} 
+    maximumVal = {'blue':(117,255,255), 'green':(86,255,255), 'yellow':(30,255,255), 'pink':(255,255,255), 'white':(0,0,255)}
 
-    colors = {'red':(0,0,255), 'blue':(255,0,0), 'green':(0,255,0), 'yellow':(0,255,255), 'pink':(255,0,255), 'white':(255,255,255)}
+    colors = {'blue':(255,0,0), 'green':(0,255,0), 'yellow':(0,255,255), 'pink':(255,0,255), 'white':(255,255,255)}
+
+    #removal of red due to mix up with pink but just in case:
+    """
+    'red':(166, 84, 141)
+    'red':(186,255,255)
+    'red':(0,0,255)
+    """
 
     colorCoord = {
         'red':[0,0],
@@ -59,26 +66,28 @@ def creating_circles(radius, x, y, colors, key, frame):
 def calculating_distances(colorCoord):
     #calculates the distances between finger points 
     calculations = {
-    'thumbIndex_x':colorCoord['blue'][0] - colorCoord['yellow'][0],
-    'thumbIndex_y' : colorCoord['blue'][1] - colorCoord['yellow'][1],
-    'indexMiddle_x' : colorCoord['yellow'][0] - colorCoord['white'][0],
-    'indexMiddle_y' : colorCoord['yellow'][1] - colorCoord['white'][1],
-    'middleRing_x' : colorCoord['white'][0] - colorCoord['green'][0],
-    'middleRing_y' : colorCoord['white'][1] - colorCoord['green'][1],
-    'ringPinky_x' : colorCoord['green'][0] - colorCoord['pink'][0],
-    'ringPinky_y' : colorCoord['green'][1] - colorCoord['pink'][1],
-    'pinkyThumb_x' : colorCoord['pink'][0] - colorCoord['blue'][0],
-    'pinkyThumb_y'  : colorCoord['pink'][1] - colorCoord['blue'][1],
+    'thumbIndex_x':colorCoord['yellow'][0] - colorCoord['blue'][0],
+    'thumbIndex_y' : colorCoord['yellow'][1] - colorCoord['blue'][1],
+    'indexMiddle_x' : colorCoord['white'][0] - colorCoord['yellow'][0],
+    'indexMiddle_y' : colorCoord['white'][1] - colorCoord['yellow'][1],
+    'middleRing_x' : colorCoord['green'][0] - colorCoord['white'][0],
+    'middleRing_y' : colorCoord['green'][1] - colorCoord['white'][1],
+    'ringPinky_x' : colorCoord['pink'][0] - colorCoord['green'][0],
+    'ringPinky_y' : colorCoord['pink'][1] - colorCoord['green'][1],
+    'pinkyThumb_x' : colorCoord['blue'][0] - colorCoord['pink'][0],
+    'pinkyThumb_y'  : colorCoord['blue'][1] - colorCoord['pink'][1],
     }
     
+    print(calculations)
     return calculations
+    
     
 
 def translate_to_letter(colorCoord, calculations):
     #letter dictionary with minimum and maximum possible values 
 
     minCoordVals = {
-        'A': {'indexMiddle_x': 22, 'indexMiddle_y':13, 'middleRing_x':25, 'middleRing_y':-1, 'ringPink_x':25, 'ringPinky_y':-21},
+        'A': {'indexMiddle_x': 22, 'indexMiddle_y':13, 'middleRing_x':25, 'middleRing_y':-1, 'ringPinky_x':25, 'ringPinky_y':-21},
         'D': {'thumbIndex_x': 10, 'thumbIndex_y': -192, 'indexMiddle_x': -14, 'indexMiddle_y': 138, 'middleRing_x':23, 'middleRing_y':-7, 'ringPinky_x': 22, 'ringPinky_y' :-5, 'pinkyThumb_x': -121, 'pinkyThumb_y': -56},
         'R': {'thumbIndex_x': -21, 'thumbIndex_y': -124, 'indexMiddle_x': -31, 'indexMiddle_y': -43, 'middleRing_x': -12, 'middleRing_y': 128, 'ringPinky_x': 16, 'ringPinky_y' : 2, 'pinkyThumb_x': -54, 'pinkyThumb_y': -73},
         }
@@ -89,8 +98,8 @@ def translate_to_letter(colorCoord, calculations):
         'R': {'thumbIndex_x': 30, 'thumbIndex_y': -81, 'indexMiddle_x': 10, 'indexMiddle_y': 27, 'middleRing_x': 32, 'middleRing_y': 237, 'ringPinky_x': 33, 'ringPinky_y' : 22, 'pinkyThumb_x': -3, 'pinkyThumb_y': -58},
         }
     
-    for max_item in maxCoordVals.items():
-        if minCoordVals.items() <= calculations.items() <= maxCoordVals.items():
+    for key in maxCoordVals.values():
+        if minCoordVals.values() <= calculations.values() <= maxCoordVals.values():
             #print(max_item)
             #letter = max_item
             #return letter
@@ -102,6 +111,7 @@ def translate_to_letter(colorCoord, calculations):
 def text_to_audio(translatedletter):
     
     text = tts.init()
+    print(Your letter is", translatedLetter) 
     text.say("Your letter is", translatedLetter)
     text.runAndWait()
 """
@@ -114,7 +124,6 @@ while(1):
     frame = resize(frame)
     frame = cv2.flip(frame, 1)
     colorCoord = find_centers(frame)
-    
     
     cv2.imshow('frame',frame)     
             
@@ -129,7 +138,20 @@ while(1):
         question = input("enter")
         if question == "go":
             calculated_distances = calculating_distances(colorCoord)
-            letter = translate_to_letter(colorCoord, calculated_distances)
+
+            if 22<= calculated_distances['indexMiddle_x'] <= 61 and 25<= calculated_distances['middleRing_x'] <=51 and 0<= calculated_distances['ringPinky_x'] <= 68:
+                 x = "a"
+                 print(x)
+                 text = tts.init()
+                 rate = text.getProperty('rate')
+                 text.setProperty('rate', rate-25)
+                 text.say(x)
+                 text.runAndWait()
+                 
+            else:
+                print("nom")
+            
+            #letter = translate_to_letter(colorCoord, calculated_distances)
 
             #audibleLetter = text_to_audio(letter)
             
