@@ -48,7 +48,7 @@ def creating_circles(radius, x, y, colors, key, frame):
         cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
         cv2.putText(frame,key + " ball", (int(x-radius),int(y-radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,colors[key],2)
 
-def translate_to_letter(x,y,colors,key,frame):
+def translate_to_letter(colorCoord):
     #letters that utilize these colors consistently
     thumbIndex_x, thumbIndex_y = (colorCoord['blue'][0]-colorCoord['yellow'][0]),(colorCoord['blue'][1]-colorCoord['yellow'][1])
     indexMiddle_x,indexMiddle_y = (colorCoord['yellow'][0]-colorCoord['white'][0]),(colorCoord['yellow'][1]-colorCoord['white'][1])
@@ -56,7 +56,7 @@ def translate_to_letter(x,y,colors,key,frame):
     ringPinky_x, ringPinky_y = (colorCoord['green'][0]-colorCoord['pink'][0]),(colorCoord['green'][1]-colorCoord['pink'][1])
     pinkyThumb_x, pinkyThumb_y  = (colorCoord['pink'][0]-colorCoord['blue'][0]),(colorCoord['pink'][1]-colorCoord['blue'][1])
     
-    if colorCoord['blue'] > 0 and colorCoord['green'] > 0 and colorCoord['yellow'] > 0 and colorCoord['pink'] > 0 and colorCoord['white'] > 0:
+    #if colorCoord['blue'] > 0 and colorCoord['green'] > 0 and colorCoord['yellow'] > 0 and colorCoord['pink'] > 0 and colorCoord['white'] > 0:
         
         #R
         
@@ -66,8 +66,13 @@ def translate_to_letter(x,y,colors,key,frame):
 
     #A
     if colorCoord['green'] > 0 and colorCoord['yellow'] > 0 and colorCoord['pink'] > 0 and colorCoord['white'] > 0:
-        
-    
+        if 22<indexMiddle_x<46 and 13<indexMiddle_y<26 and 25<middleRing_x<51 and -1<middleRing_y<17 and 25<ringPinky_x<37 and -21<ringPinky_y<-4:
+            print("a")
+        else:
+            print("nothing")
+    else:
+        print("nothing")
+
 
 #Running program until broken by using escape key
 while(1):
@@ -76,8 +81,7 @@ while(1):
     _, frame = video.read(0)
     frame = resize(frame)
     frame = cv2.flip(frame, 1)
-    colorCoord = find_centers(frame)
-    
+    colorCoordVar = find_centers(frame)
     
     cv2.imshow('frame',frame)     
             
@@ -89,11 +93,9 @@ while(1):
         cv2.destroyAllWindows()
         question = input("Enter")
         if question == "go":
-            check = colorCoord['blue'][0] - colorCoord['yellow'][0]
-            if 102 <= check <= 128:
-                print("done")
+            translate_to_letter(colorCoordVar)
         break
-
+    
 
 #Text to audio
 """
