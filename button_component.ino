@@ -1,36 +1,27 @@
 
-const int Analyze = 2;
-const int Space = 3;
-const int Finish = 4;
+const int Analyze = 12;
+const int Finish = 11;
 
-int AnalyzeState = 0;   
-int SpaceState = 0;
-int FinishState = 0;
-
-
+int buttonPressAnalyze = 0;
+int buttonPressFinish = 0;
 
 void setup() {
   pinMode(Analyze, INPUT);
-  pinMode(Space, INPUT);
   pinMode(Finish, INPUT);
   
 }
 
 void loop() {
-  buttonPressAnalyze = digitalRead(Analyze);
-  buttonPressSpace = digitalRead(Space);
-  buttonPressFinish = digitalRead(Finish);
+  int buttonPressAnalyze = digitalRead(Analyze);
+  int buttonPressFinish = digitalRead(Finish);
 
 //reading the button pushing
 
   if (buttonPressAnalyze == HIGH) {
-    Serial.println("analyze")
-    
-  } else if (buttonPressSpace==HIGH) {
-    Serial.println("space")
-    
-  } else if(buttonPressFinish==HIGH) {
-    Serial.println("finish")
+    Serial.write("analyze");
+     
+  }else if(buttonPressFinish==HIGH) {
+    Serial.write("finish");
     
   }
 }
