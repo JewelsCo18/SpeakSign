@@ -64,19 +64,35 @@ def creating_circles(radius, x, y, colors, key, frame):
         cv2.putText(frame,key + " ball", (int(x-radius),int(y-radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,colors[key],2)
 
 def calculating_distances(colorCoord):
-    #calculates the distances between finger points 
-    calculations = {
-    'thumbIndex_x':colorCoord['yellow'][0] - colorCoord['blue'][0],
-    'thumbIndex_y' : colorCoord['yellow'][1] - colorCoord['blue'][1],
-    'indexMiddle_x' : colorCoord['white'][0] - colorCoord['yellow'][0],
-    'indexMiddle_y' : colorCoord['white'][1] - colorCoord['yellow'][1],
-    'middleRing_x' : colorCoord['green'][0] - colorCoord['white'][0],
-    'middleRing_y' : colorCoord['green'][1] - colorCoord['white'][1],
-    'ringPinky_x' : colorCoord['pink'][0] - colorCoord['green'][0],
-    'ringPinky_y' : colorCoord['pink'][1] - colorCoord['green'][1],
-    'pinkyThumb_x' : colorCoord['blue'][0] - colorCoord['pink'][0],
-    'pinkyThumb_y'  : colorCoord['blue'][1] - colorCoord['pink'][1],
-    }
+    #calculates the distances between finger points
+    
+    """
+    list order[
+    thumbIndex_x,
+    thumbIndex_y,
+    indexMiddle_x,
+    indexMiddle_y,
+    middleRing_x,
+    middleRing_y,
+    ringPinky_x
+    ringPinky_y
+    pinkyThumb_x
+    pinkyThumb_y
+    ]
+    """
+    
+    calculations = [
+    colorCoord['yellow'][0] - colorCoord['blue'][0],
+    colorCoord['yellow'][1] - colorCoord['blue'][1],
+    colorCoord['white'][0] - colorCoord['yellow'][0],
+    colorCoord['white'][1] - colorCoord['yellow'][1],
+    colorCoord['green'][0] - colorCoord['white'][0],
+    colorCoord['green'][1] - colorCoord['white'][1],
+    colorCoord['pink'][0] - colorCoord['green'][0],
+    colorCoord['pink'][1] - colorCoord['green'][1],
+    colorCoord['blue'][0] - colorCoord['pink'][0],
+    colorCoord['blue'][1] - colorCoord['pink'][1],
+    ]
     
     print(calculations)
     return calculations
@@ -84,37 +100,60 @@ def calculating_distances(colorCoord):
     
 
 def translate_to_letter(colorCoord, calculations):
-    #letter dictionary with minimum and maximum possible values 
+    #letter list with minimum and maximum possible values
+
+    """
+    list order[
+    thumbIndex_x,
+    thumbIndex_y,
+    indexMiddle_x,
+    indexMiddle_y,
+    middleRing_x,
+    middleRing_y,
+    ringPinky_x
+    ringPinky_y
+    pinkyThumb_x
+    pinkyThumb_y
+    ]
+    """
 
     minCoordVals = {
-        'A': {'indexMiddle_x': 22, 'indexMiddle_y':13, 'middleRing_x':25, 'middleRing_y':-1, 'ringPinky_x':25, 'ringPinky_y':-21},
-        'D': {'thumbIndex_x': 10, 'thumbIndex_y': -192, 'indexMiddle_x': -14, 'indexMiddle_y': 138, 'middleRing_x':23, 'middleRing_y':-7, 'ringPinky_x': 22, 'ringPinky_y' :-5, 'pinkyThumb_x': -121, 'pinkyThumb_y': -56},
-        'R': {'thumbIndex_x': -21, 'thumbIndex_y': -124, 'indexMiddle_x': -31, 'indexMiddle_y': -43, 'middleRing_x': -12, 'middleRing_y': 128, 'ringPinky_x': 16, 'ringPinky_y' : 2, 'pinkyThumb_x': -54, 'pinkyThumb_y': -73},
+        'A': [0,0,22,13,25,-1,0,21,0,0],
+        'D': [10,-192,-14, 138, 23, -7, 22, -5, -121, -56],
+        'R': [-21, -124, -31, -43, -12, 128, 16, 2, -54, -73],
         }
 
     maxCoordVals = {
-        'A': {'indexMiddle_x': 46, 'indexMiddle_y':26, 'middleRing_x':51, 'middleRing_y':17, 'ringPink_x':37, 'ringPinky_y':-4},
-        'D': {'thumbIndex_x': 35, 'thumbIndex_y': -141, 'indexMiddle_x' : 9, 'indexMiddle_y': 175, 'middleRing_x':45, 'middleRing_y':31, 'ringPinky_x':41, 'ringPinky_y':11, 'pinkyThumb_x': -57, 'pinkyThumb_y' : 24},
-        'R': {'thumbIndex_x': 30, 'thumbIndex_y': -81, 'indexMiddle_x': 10, 'indexMiddle_y': 27, 'middleRing_x': 32, 'middleRing_y': 237, 'ringPinky_x': 33, 'ringPinky_y' : 22, 'pinkyThumb_x': -3, 'pinkyThumb_y': -58},
+        'A': [0,0,61,26,51, 17, 68, -4,0,0],
+        'D': [35, -141, 9, 175, 45, 31, 41, 11, -57, 24],
+        'R': [30, -81, 10, 27, 32, 237, 33, 22, -3, -58],
         }
-    
-    for key in maxCoordVals.values():
-        if minCoordVals.values() <= calculations.values() <= maxCoordVals.values():
-            #print(max_item)
-            #letter = max_item
-            #return letter
-            print("working")
-        else:
-            print("something wrong")
-            
-"""   
-def text_to_audio(translatedletter):
+
+    for key in maxCoordVals:
+        matchCount = 0
+        for i in range(10):
+            if minCoordVals[key][i] < calculations[i] < maxCoordVals[key][i]:
+                matchCount += 1
+                print("letterfound!")
+                print(key)
+            else:
+                print("invalid")
+        if matchCount == 10:
+            return key
+                
+   
+def text_to_audio(translatedLetter):
     
     text = tts.init()
-    print(Your letter is", translatedLetter) 
-    text.say("Your letter is", translatedLetter)
+    voices = engine.getProperty('voices')
+    rate = text.getProperty('rate')
+    text.setProperty('voice',voices[7].id)
+    text.setProperty('rate', rate-25)
+    
+    print("Your letter is", translatedLetter) 
+    text.say(translatedLetter)
     text.runAndWait()
-"""
+
 
 #Running program until broken by using escape key
 while(1):
@@ -138,22 +177,8 @@ while(1):
         question = input("enter")
         if question == "go":
             calculated_distances = calculating_distances(colorCoord)
-
-            if 22<= calculated_distances['indexMiddle_x'] <= 61 and 25<= calculated_distances['middleRing_x'] <=51 and 0<= calculated_distances['ringPinky_x'] <= 68:
-                 x = "a"
-                 print(x)
-                 text = tts.init()
-                 rate = text.getProperty('rate')
-                 text.setProperty('rate', rate-25)
-                 text.say(x)
-                 text.runAndWait()
-                 
-            else:
-                print("nom")
-            
-            #letter = translate_to_letter(colorCoord, calculated_distances)
-
-            #audibleLetter = text_to_audio(letter)
+            letter = translate_to_letter(colorCoord, calculated_distances)
+            audibleLetter = text_to_audio(letter)
             
         else:
             print("wrong input")
