@@ -98,7 +98,6 @@ def calculating_distances(colorCoord):
     return calculations
     
     
-
 def translate_to_letter(colorCoord, calculations):
     #letter list with minimum and maximum possible values
 
@@ -130,29 +129,40 @@ def translate_to_letter(colorCoord, calculations):
         }
 
     alphaCompile = []
-
     for key in maxCoordVals:
         for i in range(10):
             if minCoordVals[key][i] < calculations[i] < maxCoordVals[key][i]:  
                 alphaCompile.append(key)
-            print(alphaCompile)
             
     frequentLetter = max(alphaCompile, key=alphaCompile.count)
 
-    print(frequentLetter)
     return frequentLetter
-        
+
+letterCompile = []
+def compile_letters(letter):
+    
+    letterCompile.append(letter)
+
+    print(letterCompile)
+    return letterCompile
+
+def letters_to_words(letterList):
+
+    word = ""
+    for elem in letterList:
+        word += elem
+    return word
+      
             
-def text_to_audio(translatedLetter):
+def text_to_audio(translatedWord):
     
     text = tts.init()
     #voices = engine.getProperty('voices')
     rate = text.getProperty('rate')
     #text.setProperty('voice',voices[7].id)
     text.setProperty('rate', rate-25)
-    
-    print("Your letter is", translatedLetter) 
-    text.say(translatedLetter)
+    print("Your word is :", translatedWord)
+    text.say(translatedWord)
     text.runAndWait()
 
 
@@ -165,23 +175,24 @@ while(1):
     frame = cv2.flip(frame, 1)
     colorCoord = find_centers(frame)
     
-    cv2.imshow('frame',frame)     
-            
-    #escape
+    cv2.imshow('frame',frame)
+
     k = cv2.waitKey(1) & 0xFF
+    
+    #analyse...future button prompt that will start the calculations and translation
+    if k == ord("a"):
+        calculated_distances = calculating_distances(colorCoord)
+        letterFound = translate_to_letter(colorCoord, calculated_distances)
+        listOfLetters = compile_letters(letterFound)
+        
+    if k == ord("f"):
+        wordCreated = letters_to_words(listOfLetters)
+        audibleLetter = text_to_audio(wordCreated)
+       
+    #escape
     if k == 27:#escape key
         print("Quit")
         video.release()
         cv2.destroyAllWindows()
-
-        #future button prompt that will start the calculations and translation
-        question = input("enter")
-        if question == "go":
-            calculated_distances = calculating_distances(colorCoord)
-            letterFound = translate_to_letter(colorCoord, calculated_distances)
-            audibleLetter = text_to_audio(letterFound)   
-        else:
-            print("wrong input")
-            
         break
     
