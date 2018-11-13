@@ -93,7 +93,7 @@ def calculating_distances(colorCoord):
     colorCoord['blue'][0] - colorCoord['pink'][0],
     colorCoord['blue'][1] - colorCoord['pink'][1],
     ]
-    
+
     print(calculations)
     return calculations
     
@@ -119,35 +119,36 @@ def translate_to_letter(colorCoord, calculations):
 
     minCoordVals = {
         'A': [0,0,22,13,25,-1,0,21,0,0],
-        'D': [10,-192,-14, 138, 23, -7, 22, -5, -121, -56],
+        'D': [0,-192,0, 176, 23, 8, 17, -5, -88, -120],
         'R': [-21, -124, -31, -43, -12, 128, 16, 2, -54, -73],
         }
 
     maxCoordVals = {
         'A': [0,0,61,26,51, 17, 68, -4,0,0],
-        'D': [35, -141, 9, 175, 45, 31, 41, 11, -57, 24],
+        'D': [35, -120, 20, 230, 42, 31, 41, 10, 5, -80],
         'R': [30, -81, 10, 27, 32, 237, 33, 22, -3, -58],
         }
 
+    alphaCompile = []
+
     for key in maxCoordVals:
-        matchCount = 0
         for i in range(10):
-            if minCoordVals[key][i] < calculations[i] < maxCoordVals[key][i]:
-                matchCount += 1
-                print("letterfound!")
-                print(key)
-            else:
-                print("invalid")
-        if matchCount == 10:
-            return key
-                
-   
+            if minCoordVals[key][i] < calculations[i] < maxCoordVals[key][i]:  
+                alphaCompile.append(key)
+            print(alphaCompile)
+            
+    frequentLetter = max(alphaCompile, key=alphaCompile.count)
+
+    print(frequentLetter)
+    return frequentLetter
+        
+            
 def text_to_audio(translatedLetter):
     
     text = tts.init()
-    voices = engine.getProperty('voices')
+    #voices = engine.getProperty('voices')
     rate = text.getProperty('rate')
-    text.setProperty('voice',voices[7].id)
+    #text.setProperty('voice',voices[7].id)
     text.setProperty('rate', rate-25)
     
     print("Your letter is", translatedLetter) 
@@ -177,9 +178,8 @@ while(1):
         question = input("enter")
         if question == "go":
             calculated_distances = calculating_distances(colorCoord)
-            letter = translate_to_letter(colorCoord, calculated_distances)
-            audibleLetter = text_to_audio(letter)
-            
+            letterFound = translate_to_letter(colorCoord, calculated_distances)
+            audibleLetter = text_to_audio(letterFound)   
         else:
             print("wrong input")
             
