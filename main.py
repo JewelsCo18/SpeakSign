@@ -119,12 +119,16 @@ def translate_to_letter(colorCoord, calculations):
     minCoordVals = {
         'A': [0,0,22,13,25,-1,0,21,0,0],
         'D': [0,-192,0, 176, 23, 8, 17, -5, -88, -120],
+        'H': [-80,-100,-411,-260,600,213,0,0,65,112],
+        'I':[-7,50,20,14,30,-15,50,-190,-140,100],
         'R': [-21, -124, -31, -43, -12, 128, 16, 2, -54, -73],
         }
 
     maxCoordVals = {
         'A': [0,0,61,26,51, 17, 68, -4,0,0],
         'D': [35, -120, 20, 230, 42, 31, 41, 10, 5, -80],
+        'H': [-70,-60,-312,-200,700,300,0,0,100,170],
+        'I':[14,73,30,30,40,-6,70,-150,-105, 120],
         'R': [30, -81, 10, 27, 32, 237, 33, 22, -3, -58],
         }
 
@@ -146,6 +150,20 @@ def compile_letters(letter):
     print(letterCompile)
     return letterCompile
 
+def created_space(letterList):
+
+    letterList.append(" ")
+    
+    print(letterList)
+    return letterList
+
+def delete_letter(letterList):
+
+    letterList.pop(len(letterList)-1)
+
+    print(letterList)
+    return letterList
+
 def letters_to_words(letterList):
 
     word = ""
@@ -153,7 +171,7 @@ def letters_to_words(letterList):
         word += elem
     return word
       
-            
+        
 def text_to_audio(translatedWord):
     
     text = tts.init()
@@ -184,11 +202,18 @@ while(1):
         calculated_distances = calculating_distances(colorCoord)
         letterFound = translate_to_letter(colorCoord, calculated_distances)
         listOfLetters = compile_letters(letterFound)
+
+    if k == ord("s"):
+        spaceAdded = created_space(listOfLetters)
+
+    if k == ord("d"):
+        deletedLetter = delete_letter(listOfLetters)
         
     if k == ord("f"):
         wordCreated = letters_to_words(listOfLetters)
         audibleLetter = text_to_audio(wordCreated)
-       
+
+  
     #escape
     if k == 27:#escape key
         print("Quit")
