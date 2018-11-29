@@ -1,8 +1,9 @@
+
 import time
 import pyttsx3 as tts
 import cv2
 import numpy as np
-import serial as serialkiller
+import serial 
 
 video = cv2.VideoCapture(0)
 
@@ -97,10 +98,8 @@ def calculating_distances(colorCoord):
     print(calculations)
     return calculations
     
-    
 def translate_to_letter(colorCoord, calculations):
-    #letter list with minimum and maximum possible values
-
+    #for refernence to calculations
     """
     list order[
     thumbIndex_x,
@@ -115,65 +114,65 @@ def translate_to_letter(colorCoord, calculations):
     pinkyThumb_y
     ]
     """
-
+    
+    #letter list with minimum and maximum possible values
     minCoordVals = {
         'A': [0,0,22,13,25,-1,0,21,0,0],
         'B': [-80,-150,38,-35,20,0,40,55,-65,90],
-        #'C':  
+        #Jules'C': [
         'D': [0,-192,0, 176, 23, 8, 17, -5, -88, -120],
-        #'E': [-73,-57,30,-10,40,4,30,-5,-60,25],  incomplete confusion with A
-        #'F': [
-        #'G': [
-        #'H': [-80,-100,-411,-260,600,213,0,0,65,112],
+        #Jules'E': [
+        #Jules'F': [
+        'G': [-80, -60, 370, -240, 0,0,0,0, -390, -150],
+        'H': [-125,-150,-30, 40,-200,-250,0,0,260,-130],
         'I':[-7,50,20,14,30,-15,50,-190,-140,100],
         'K': [377, 77, 36, -20, -37, 204, 18, -10, -567, -338],
         'L': [81, -209, 12, 147, 29, -5, 16, -21, -283, -71], 
-        #'M': [
-        #'N': [
-        'O': [348, 83, -379,-123, 88, -4.5,  31, -336, -669, -195],
+        'M': [380, 170, -400, -200, 220, -160, -10,0, -461, -240],
+        'N': [275, 175, 5, -20, 40, 30,30,10, -520,-310],
+        #'O': [
         #'P': [
         #'Q': [
         'R': [-21, -124, -31, -43, -12, 128, 16, 2, -54, -73],
         #'S': [
         'T': [-4, 68, 24, 16, 27, -19, 23, -52, -98, -64],
-        'U': [-73, -197, 30, -24, -46, 70, 18, 2, -15, -126],  
+        'U': [-73, -197, 30, -24, -46, 70, 18, 2, -15, -126],
         #'V': [
         #'W': [
         #'X': [
         'Y': [55, 103, 21, 12, 43, -23, 57, -220, -337, 49],
-        'I Love You': [48, -169, 20, 172, 13, -1.5, 30, -172,-224, 56] 
+        'I Love You': [48, -169, 20, 172, 13, -1.5, 30, -172,-224, 56],
         }
 
     maxCoordVals = {
         'A': [0,0,61,26,51, 17, 68, -4,0,0],
         'B': [-50,-140,50,-15,35,20,55,65,-50,105],
-        #'C':  
+        #'C':[
         'D': [35, -120, 20, 230, 42, 31, 41, 10, 5, -80],
-        #'E': [-55,-35,40,5,50,15,40,15,-45,50],
+        #'E': 
         #'F': [
-        #'G': [
-        #'H': [-70,-60,-312,-200,700,300,0,0,100,170],
-        'I': [14,73,30,30,40,-6,70,-150,-105, 120],
+        'G': [-60, -30, 400, -165, 0, 0, 0, 0, -280, -100],
+        'H': [-70,-100,-4,80,150,70,0,0,350,7],
+        'I':[14,73,30,30,40,-6,70,-150,-105, 120],
         'K': [465, 116, 72, 10, 13, 240, 29, 12, -420, -271],
         'L': [149, -134, 56, 278, 48, 19, 40, 18, -159, -8],
-        #'M': [
-        #'N': [
+        'M': [415,200,-170, 200, 430,200, 10, 30, 430, -200],
+        'N': [400, 260,78,20,80,89, 70, 40, -335, -275],
         'O': [ 380, 165, -60, 56, 413, 439, 387, 60, -386, -102],
         #'P': [
         #'Q': [
-
-        
         'R': [30, -81, 10, 27, 32, 237, 33, 22, -3, -58],
         #'S': [
         'T': [-4, 91, 39, 25, 46, -3, 45, -17, -71, -53], 
-        'U': [-46, -136, 75, 167, -2, 289, 35, 25, 6, -92],  
+        'U': [-46, -136, 75, 167, -2, 289, 35, 25, 6, -92],
         #'V': [
         #'W': [
         #'X': [
-        'Y': [117, 134, 41, 50, 52, 9, 133, -179 , -190, 108],
-        'I Love You': [101, -97, 61, 212, 34, 20, 52, -134, -146, 134] 
+                'Y': [117, 134, 41, 50, 52, 9, 133, -179 , -190, 108],
+        'I Love You': [101, -97, 61, 212, 34, 20, 52, -134, -146, 134],
         }
 
+    #checks if calculations are in between the minimum and maximum values for letters and returns the most frequent letter 
     alphaCompile = []
     for key in maxCoordVals:
         for i in range(10):
@@ -185,6 +184,7 @@ def translate_to_letter(colorCoord, calculations):
     print(frequentLetter)
     return frequentLetter
 
+#compiles a list of all the letters that are found
 letterCompile = []
 def compile_letters(letter):
     
@@ -193,6 +193,7 @@ def compile_letters(letter):
     print(letterCompile)
     return letterCompile
 
+#function for creating spaces for sentences
 def created_space(letterList):
 
     letterList.append(" ")
@@ -200,6 +201,7 @@ def created_space(letterList):
     print(letterList)
     return letterList
 
+#function for deleting characters (safety measure)
 def delete_letter(letterList):
 
     letterList.pop(len(letterList)-1)
@@ -207,6 +209,7 @@ def delete_letter(letterList):
     print(letterList)
     return letterList
 
+#takes the list of compiled characters and creates the sentence or word
 def letters_to_words(letterList):
 
     word = ""
@@ -218,16 +221,15 @@ def letters_to_words(letterList):
 def text_to_audio(translatedWord):
     
     text = tts.init()
-    voices = text.getProperty('voices')
+    #voices = text.getProperty('voices')
     rate = text.getProperty('rate')
-    text.setProperty('voice',voices[7].id)
+    #text.setProperty('voice',voices[7].id)
     text.setProperty('rate', rate-25)
     print("Your word is :", translatedWord)
     text.say(translatedWord)
     text.runAndWait()
 
-
-#Running program until broken by using escape key
+#Running program until broken by using escape or key command functions
 while(1):
 
     # Take each frame
@@ -238,25 +240,62 @@ while(1):
     
     cv2.imshow('frame',frame)
 
+    #Pyserial Arduino Function
+    try:
+       arduino = serial.Serial('/dev/tty.usbserial-DN01DY7O', 9600)
+    except:
+        print("Failed to connect on /dev/tty.usbserial-DN01DY7O")
+
     k = cv2.waitKey(1) & 0xFF
-    
-    #analyse...future button prompt that will start the calculations and translation
+
+    #Arduino button component commands 
+    try:
+        msg=arduino.readline()
+        print(msg.decode('utf-8'))
+   
+        while True:
+            msg=arduino.readline()
+            print(msg.decode('utf-8'))
+
+            if arduino.readline().strip().decode('utf-8') == 'A':
+                print("Anazlying!\n")
+                calculated_distances = calculating_distances(colorCoord)
+                letterFound = translate_to_letter(colorCoord, calculated_distances)
+                listOfLetters = compile_letters(letterFound)
+                
+            if arduino.readline().strip().decode('utf-8') == 'F':
+                print("Finished!\n")
+                wordCreated = letters_to_words(listOfLetters)
+                audibleLetter = text_to_audio(wordCreated)
+        
+            if arduino.readline().strip().decode('utf-8') == 'S':
+                print("Space!\n")
+                spaceAdded = created_space(listOfLetters)
+
+    except:
+        print ("Failed to read!")
+
+    #delete function
+    if k == ord("d"):
+        deletedLetter = delete_letter(listOfLetters)
+
+    #Old key commands
+    """
+    #key command for "Analyse"
     if k == ord("a"):
         calculated_distances = calculating_distances(colorCoord)
         letterFound = translate_to_letter(colorCoord, calculated_distances)
         listOfLetters = compile_letters(letterFound)
 
+    #space function
     if k == ord("s"):
-        spaceAdded = created_space(listOfLetters)
 
-    if k == ord("d"):
-        deletedLetter = delete_letter(listOfLetters)
-        
+    #key command for "Finish" 
     if k == ord("f"):
         wordCreated = letters_to_words(listOfLetters)
         audibleLetter = text_to_audio(wordCreated)
+    """
 
-  
     #escape
     if k == 27:#escape key
         print("Quit")
