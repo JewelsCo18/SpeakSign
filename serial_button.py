@@ -1,23 +1,11 @@
 import serial
+import time
 
-arduino = serial.Serial('/dev/tty.usbserial-DN01DY7O', 9600, timeout = 1)
-"""
+try:
+   arduino = serial.Serial('/dev/tty.usbserial-DN01DY7O', 9600)
 except:
-   print("Failed to connect on /dev/ttyACM0")
-"""
-
-commands = arduino.readline()
+   print("Failed to connect on /dev/tty.usbserial-DN01DY7O")
 
 while True:
-   if commands == 'analyze':
-            #call analyze
-      print("analyzed")
-   elif commands == 'finish':
-            #call finish
-      print("fished")
-            
-            
-    
-
-#except:
- #  print ("Failed to read!")
+   if arduino.readline().strip() == 'A':
+     print("Detected! Analyzing !\n")
