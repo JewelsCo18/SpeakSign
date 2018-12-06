@@ -2,7 +2,7 @@ import time
 import pyttsx3 as tts
 import cv2
 import numpy as np
-import serial 
+import serial
 
 video = cv2.VideoCapture(0)
 
@@ -228,22 +228,21 @@ def text_to_audio(translatedWord):
     text.say(translatedWord)
     text.runAndWait()
 
+
+#Pyserial Arduino Function
+try:
+    arduino = serial.Serial('/dev/tty.usbserial-DN01DY7O', 9600)
+except:
+    print("Failed to connect on /dev/tty.usbserial-DN01DY7O")
+
 #Running program until broken by using escape or key command functions
 while(1):
-
     # Take each frame
     _, frame = video.read(0)
     frame = resize(frame)
     frame = cv2.flip(frame, 1)
-    colorCoord = find_centers(frame)
-    
     cv2.imshow('frame',frame)
-
-    #Pyserial Arduino Function
-    try:
-       arduino = serial.Serial('/dev/tty.usbserial-DN01DY7O', 9600)
-    except:
-        print("Failed to connect on /dev/tty.usbserial-DN01DY7O")
+    colorCoord = find_centers(frame)
 
     k = cv2.waitKey(1) & 0xFF
 
@@ -252,24 +251,24 @@ while(1):
         msg=arduino.readline()
         print(msg.decode('utf-8'))
    
-        while True:
-            msg=arduino.readline()
-            print(msg.decode('utf-8'))
-
-            if arduino.readline().strip().decode('utf-8') == 'A':
-                print("Anazlying!\n")
-                calculated_distances = calculating_distances(colorCoord)
-                letterFound = translate_to_letter(colorCoord, calculated_distances)
-                listOfLetters = compile_letters(letterFound)
-                
-            if arduino.readline().strip().decode('utf-8') == 'F':
-                print("Finished!\n")
-                wordCreated = letters_to_words(listOfLetters)
-                audibleLetter = text_to_audio(wordCreated)
-        
-            if arduino.readline().strip().decode('utf-8') == 'S':
-                print("Space!\n")
-                spaceAdded = created_space(listOfLetters)
+        if arduino.readline().strip().decode('utf-8') == 'A':
+            print("Anazlying!\n")
+            calculated_distances = calculating_distances(colorCoord)
+            letterFound = translate_to_letter(colorCoord, calculated_distances)
+            listOfLetters = compile_letters(letterFound)
+            
+            
+        if arduino.readline().strip().decode('utf-8') == 'F':
+            print("Finished!\n")
+            wordCreated = letters_to_words(listOfLetters)
+            audibleLetter = text_to_audio(wordCreated)
+            
+    
+        if arduino.readline().strip().decode('utf-8') == 'S':
+            print("Space!\n")
+            spaceAdded = created_space(listOfLetters)
+            
+            
 
     except:
         print ("Failed to read!")
