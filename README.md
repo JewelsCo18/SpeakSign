@@ -1,6 +1,8 @@
 # SpeakSign
 NYU RAD project 2018
 
+[Demonstration Video](https://www.youtube.com/watch?v=fRIzN6YoIOg&feature=youtu.be)
+
 # Virtualenv cheatsheet
 - ./setup.sh (creates new virtualenv)
 - source activate (starts virtualenv)
