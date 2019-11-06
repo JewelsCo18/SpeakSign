@@ -1,8 +1,6 @@
 # SpeakSign
 NYU RAD project 2018
 
-![Alt text](https://jcunniff.net/f/you-can-do-it.jpg)
-
 # Virtualenv cheatsheet
 - ./setup.sh (creates new virtualenv)
 - source activate (starts virtualenv)
